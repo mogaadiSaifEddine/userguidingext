@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "UserGuiding Data Exporter",
+  "version": "1.0",
+  "description": "Export UserGuiding user data to Excel format",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "https://panel.userguiding.com/*",
+    "https://uapi.userguiding.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon.png",
+      "48": "images/icon.png",
+      "128": "images/icon.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon.png",
+    "48": "images/icon.png",
+    "128": "images/icon.png"
+  }
+}

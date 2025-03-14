@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>UserGuiding Data Exporter</title>
+        <style>
+    body {
+      width: 300px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+    }
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 10px 0;
+      cursor: pointer;
+      border-radius: 4px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #357ae8;
+    }
+    #status {
+      margin-top: 15px;
+      color: #666;
+      font-size: 14px;
+    }
+    .error {
+      color: #d32f2f;
+    }
+    .success {
+      color: #388e3c;
+    }
+    .note {
+      font-size: 12px;
+      color: #666;
+      margin-top: 15px;
+    }
+  </style>
+    </head>
+    <body>
+        <h2>UserGuiding Data Exporter</h2>
+        <p>Export user data from UserGuiding to Excel format.</p>
+
+        <button id="exportBtn">Export Users Data</button>
+        <div id="status"></div>
+
+        <p class="note">Note: You must be logged into UserGuiding panel for this
+            to work.</p>
+
+        <script src="popup.js"></script>
+    </body>
+</html>
