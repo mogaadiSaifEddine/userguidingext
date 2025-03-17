@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>UserGuiding Data Exporter</title>
-        <style>
+  <head>
+    <title>UserGuiding Analytics Exporter</title>
+    <style>
     body {
-      width: 300px;
+      width: 350px;
       padding: 15px;
       font-family: Arial, sans-serif;
     }
     h2 {
       margin-top: 0;
       color: #333;
+      font-size: 18px;
     }
     button {
       background-color: #4285f4;
@@ -29,6 +30,15 @@
     button:hover {
       background-color: #357ae8;
     }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .section {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
     #status {
       margin-top: 15px;
       color: #666;
@@ -40,23 +50,126 @@
     .success {
       color: #388e3c;
     }
+    .warning {
+      color: #f57c00;
+    }
+    .checkbox-group {
+      margin: 10px 0;
+    }
+    .checkbox-label {
+      display: block;
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .progress-container {
+      width: 100%;
+      height: 20px;
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    .progress-bar {
+      height: 20px;
+      background-color: #4CAF50;
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.3s;
+    }
     .note {
       font-size: 12px;
       color: #666;
       margin-top: 15px;
     }
+    .advanced-toggle {
+      text-align: right;
+      font-size: 12px;
+      color: #4285f4;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .advanced-section {
+      display: none;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
   </style>
-    </head>
-    <body>
-        <h2>UserGuiding Data Exporter</h2>
-        <p>Export user data from UserGuiding to Excel format.</p>
+  </head>
+  <body>
+    <h2>UserGuiding Analytics Exporter</h2>
 
-        <button id="exportBtn">Export Users Data</button>
-        <div id="status"></div>
+    <div class="section">
+      <p>Export UserGuiding data as multiple CSV files for comprehensive
+        analytics.</p>
 
-        <p class="note">Note: You must be logged into UserGuiding panel for this
-            to work.</p>
+      <div class="checkbox-group">
+        <p><strong>Select data to include:</strong></p>
+        <label class="checkbox-label">
+          <input type="checkbox" id="includeUsers" checked> Users Data (CSV)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="includeSurveys" checked> Survey Responses
+          (CSV)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="includeCompanies" checked> Companies Data
+          (CSV)
+        </label>
+      </div>
 
-        <script src="popup.js"></script>
-    </body>
+      <div class="checkbox-group">
+        <p><strong>Generate merged data:</strong></p>
+        <label class="checkbox-label">
+          <input type="checkbox" id="mergeUserSurvey" checked> Users + Survey
+          Responses (CSV)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="mergeUserCompany" checked> Users +
+          Companies (CSV)
+        </label>
+      </div>
+
+      <div class="checkbox-group">
+        <p><strong>Include analysis guide:</strong></p>
+        <label class="checkbox-label">
+          <input type="checkbox" id="includeGuide" checked> Analysis
+          Instructions (TXT)
+        </label>
+      </div>
+
+      <div class="advanced-toggle" id="advancedToggle">Advanced Options ▼</div>
+      <div class="advanced-section" id="advancedSection">
+        <label class="checkbox-label">
+          <input type="checkbox" id="limitRows"> Limit to 1000 rows (faster
+          export)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="anonymizeData"> Anonymize sensitive data
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="includePreview"> Show data preview after
+          export
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="zipFiles"> Compress all files into a single
+          ZIP
+        </label>
+      </div>
+    </div>
+
+    <button id="exportBtn">Export Analytics Data</button>
+
+    <div class="progress-container" style="display: none;"
+      id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="status"></div>
+
+    <p class="note">Note: You must be logged into UserGuiding panel for this to
+      work.</p>
+
+    <script src="popup.js"></script>
+  </body>
 </html>
