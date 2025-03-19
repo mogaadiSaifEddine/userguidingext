@@ -6,6 +6,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const advancedToggle = document.getElementById('advancedToggle');
     const advancedSection = document.getElementById('advancedSection');
 
+    // Tab navigation
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+
+            // Add active class to clicked tab
+            this.classList.add('active');
+
+            // Show corresponding content
+            const contentId = 'content-' + this.id.split('-')[1];
+            document.getElementById(contentId).classList.add('active');
+        });
+    });
+
     // Advanced options toggle
     advancedToggle.addEventListener('click', function () {
         if (advancedSection.style.display === 'none' || advancedSection.style.display === '') {
@@ -17,6 +36,34 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // User and survey dependencies
+    const includeUsers = document.getElementById('includeUsers');
+    const includeSurveys = document.getElementById('includeSurveys');
+    const includeCompanies = document.getElementById('includeCompanies');
+    const mergeUserSurvey = document.getElementById('mergeUserSurvey');
+    const mergeUserCompany = document.getElementById('mergeUserCompany');
+
+    // Update dependencies when checkboxes change
+    function updateDependencies() {
+        mergeUserSurvey.disabled = !includeUsers.checked || !includeSurveys.checked;
+        if (mergeUserSurvey.disabled) {
+            mergeUserSurvey.checked = false;
+        }
+
+        mergeUserCompany.disabled = !includeUsers.checked || !includeCompanies.checked;
+        if (mergeUserCompany.disabled) {
+            mergeUserCompany.checked = false;
+        }
+    }
+
+    // Add event listeners for dependency updates
+    includeUsers.addEventListener('change', updateDependencies);
+    includeSurveys.addEventListener('change', updateDependencies);
+    includeCompanies.addEventListener('change', updateDependencies);
+
+    // Initial dependency check
+    updateDependencies();
+
     // Start export process
     exportBtn.addEventListener('click', function () {
         // Get options from UI
@@ -27,10 +74,12 @@ document.addEventListener('DOMContentLoaded', function () {
             mergeUserSurvey: document.getElementById('mergeUserSurvey').checked,
             mergeUserCompany: document.getElementById('mergeUserCompany').checked,
             includeGuide: document.getElementById('includeGuide').checked,
+            includeJSON: document.getElementById('includeJSON').checked,
             limitRows: document.getElementById('limitRows').checked,
             anonymizeData: document.getElementById('anonymizeData').checked,
             includePreview: document.getElementById('includePreview').checked,
-            zipFiles: document.getElementById('zipFiles').checked
+            zipFiles: document.getElementById('zipFiles').checked,
+            generatePDFReport: document.getElementById('generatePDFReport').checked
         };
 
         // Validate selections
@@ -46,6 +95,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!options.includeCompanies && options.mergeUserCompany) {
             updateStatus("Companies data is required for User-Company merged file", "error");
+            return;
+        }
+
+        // PDF report requires at least one data type
+        if (options.generatePDFReport &&
+            !options.includeUsers && !options.includeSurveys && !options.includeCompanies) {
+            updateStatus("PDF report requires at least one data type (Users, Surveys, or Companies)", "error");
             return;
         }
 
@@ -103,7 +159,18 @@ document.addEventListener('DOMContentLoaded', function () {
             resetUI();
         } else if (response.status === "success") {
             updateProgress(100);
-            updateStatus(response.message, "success");
+
+            // Check if PDF was generated but had an error
+            if (response.pdfError) {
+                updateStatus(`${response.message} (PDF report error: ${response.pdfError})`, "warning");
+            } else if (response.pdfGenerated) {
+                // Success with PDF generated
+                updateStatus(response.message, "success");
+            } else {
+                // Regular success
+                updateStatus(response.message, "success");
+            }
+
             setTimeout(resetUI, 3000);
         }
     }

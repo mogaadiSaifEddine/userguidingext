@@ -94,68 +94,143 @@
       border-radius: 4px;
       margin-top: 10px;
     }
+    .highlight-feature {
+      background-color: #fffde7;
+      padding: 8px;
+      border-left: 3px solid #fbc02d;
+      margin-bottom: 10px;
+      border-radius: 0 4px 4px 0;
+    }
+    .feature-badge {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+    .tab-container {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      cursor: pointer;
+      background-color: #f1f1f1;
+      border: 1px solid #ddd;
+    }
+    .tab.active {
+      background-color: #4285f4;
+      color: white;
+      border-color: #4285f4;
+    }
+    .tab-content {
+      display: none;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .tab-content.active {
+      display: block;
+    }
   </style>
   </head>
   <body>
-    <h2>UserGuiding Analytics Exporter</h2>
+    <h2>UserGuiding Analytics Exporter v2.0</h2>
 
     <div class="section">
       <p>Export UserGuiding data as multiple CSV files for comprehensive
         analytics.</p>
 
-      <div class="checkbox-group">
-        <p><strong>Select data to include:</strong></p>
-        <label class="checkbox-label">
-          <input type="checkbox" id="includeUsers" checked> Users Data (CSV)
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="includeSurveys" checked> Survey Responses
-          (CSV)
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="includeCompanies" checked> Companies Data
-          (CSV)
-        </label>
+      <div class="tab-container">
+        <div class="tab active" id="tab-basic">Basic</div>
+        <div class="tab" id="tab-merging">Merging</div>
+        <div class="tab" id="tab-output">Output</div>
       </div>
 
-      <div class="checkbox-group">
-        <p><strong>Generate merged data:</strong></p>
-        <label class="checkbox-label">
-          <input type="checkbox" id="mergeUserSurvey" checked> Users + Survey
-          Responses (CSV)
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="mergeUserCompany" checked> Users +
-          Companies (CSV)
-        </label>
+      <div class="tab-content active" id="content-basic">
+        <div class="checkbox-group">
+          <p><strong>Select data to include:</strong></p>
+          <label class="checkbox-label">
+            <input type="checkbox" id="includeUsers" checked> Users Data (CSV)
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="includeSurveys" checked> Survey Responses
+            (CSV)
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="includeCompanies" checked> Companies Data
+            (CSV)
+          </label>
+        </div>
       </div>
 
-      <div class="checkbox-group">
-        <p><strong>Include analysis guide:</strong></p>
-        <label class="checkbox-label">
-          <input type="checkbox" id="includeGuide" checked> Analysis
-          Instructions (TXT)
-        </label>
+      <div class="tab-content" id="content-merging">
+        <div class="checkbox-group">
+          <p><strong>Generate merged data:</strong></p>
+          <label class="checkbox-label">
+            <input type="checkbox" id="mergeUserSurvey" checked> Users + Survey
+            Responses
+            <span class="feature-badge">Enhanced</span>
+          </label>
+          <small>Now creates user-centric and survey-centric versions</small>
+
+          <label class="checkbox-label" style="margin-top: 10px;">
+            <input type="checkbox" id="mergeUserCompany" checked> Users +
+            Companies
+            <span class="feature-badge">Enhanced</span>
+          </label>
+          <small>Enhanced with better company data integration</small>
+        </div>
       </div>
 
-      <div class="advanced-toggle" id="advancedToggle">Advanced Options ▼</div>
-      <div class="advanced-section" id="advancedSection">
-        <label class="checkbox-label">
-          <input type="checkbox" id="limitRows"> Limit to 1000 rows (faster
-          export)
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="anonymizeData"> Anonymize sensitive data
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="includePreview"> Show data preview after
-          export
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="zipFiles"> Compress all files into a single
-          ZIP
-        </label>
+      <div class="tab-content" id="content-output">
+        <div class="highlight-feature">
+          <label class="checkbox-label">
+            <input type="checkbox" id="generatePDFReport" checked> Generate PDF
+            Report
+            <span class="feature-badge">New</span>
+          </label>
+          <small>Create a visual analytics report with charts and
+            insights</small>
+          <p style="margin-top: 5px; font-size: 11px;">Now directly prints to
+            PDF instead of just creating HTML</p>
+        </div>
+
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="includeGuide" checked> Analysis
+            Instructions (TXT)
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="includeJSON" checked> Export combined
+            JSON
+          </label>
+        </div>
       </div>
+    </div>
+
+    <div class="advanced-toggle" id="advancedToggle">Advanced Options ▼</div>
+    <div class="advanced-section" id="advancedSection">
+      <label class="checkbox-label">
+        <input type="checkbox" id="limitRows"> Limit to 1000 rows (faster
+        export)
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="anonymizeData"> Anonymize sensitive data
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="includePreview"> Show data preview after
+        export
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="zipFiles"> Compress all files into a single
+        ZIP
+      </label>
     </div>
 
     <button id="exportBtn">Export Analytics Data</button>
@@ -168,7 +243,7 @@
     <div id="status"></div>
 
     <p class="note">Note: You must be logged into UserGuiding panel for this to
-      work.</p>
+      work. Pop-ups must be enabled for PDF generation.</p>
 
     <script src="popup.js"></script>
   </body>
