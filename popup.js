@@ -26,7 +26,9 @@ document.addEventListener('DOMContentLoaded', function () {
             includeCompanies: document.getElementById('includeCompanies').checked,
             mergeUserSurvey: document.getElementById('mergeUserSurvey').checked,
             mergeUserCompany: document.getElementById('mergeUserCompany').checked,
+            mergeAllBySurvey: document.getElementById('mergeAllBySurvey').checked,
             includeGuide: document.getElementById('includeGuide').checked,
+            includePdfReport: document.getElementById('includePdfReport').checked,
             limitRows: document.getElementById('limitRows').checked,
             anonymizeData: document.getElementById('anonymizeData').checked,
             includePreview: document.getElementById('includePreview').checked,
@@ -34,18 +36,18 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // Validate selections
-        if (!options.includeUsers && (options.mergeUserSurvey || options.mergeUserCompany)) {
+        if (!options.includeUsers && (options.mergeUserSurvey || options.mergeUserCompany || options.mergeAllBySurvey)) {
             updateStatus("Raw Users data is required for merged files", "error");
             return;
         }
 
-        if (!options.includeSurveys && options.mergeUserSurvey) {
-            updateStatus("Survey data is required for User-Survey merged file", "error");
+        if (!options.includeSurveys && (options.mergeUserSurvey || options.mergeAllBySurvey)) {
+            updateStatus("Survey data is required for merged survey files", "error");
             return;
         }
 
-        if (!options.includeCompanies && options.mergeUserCompany) {
-            updateStatus("Companies data is required for User-Company merged file", "error");
+        if (!options.includeCompanies && (options.mergeUserCompany || options.mergeAllBySurvey)) {
+            updateStatus("Companies data is required for merged company files", "error");
             return;
         }
 
